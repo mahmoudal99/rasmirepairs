@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasmi Design & Repairs — Your Home's Best Friend</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Archivo+Black&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --yellow: #FFD200;
+            --yellow-light: #FFF3B0;
+            --yellow-hover: #E6BD00;
+            --black: #1A1A1A;
+            --black-soft: #2A2A2A;
+            --white: #FFFFFF;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #E8E8E8;
+            --gray-400: #999;
+            --gray-600: #666;
+            --font-display: 'Archivo Black', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--black);
+            background: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NOISE TEXTURE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        @keyframes dashDraw {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── NAVIGATION ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 3px solid var(--yellow);
+            transition: box-shadow 0.3s;
+        }
+        nav.scrolled {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--yellow);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--black);
+            position: relative;
+            z-index: 1;
+        }
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            color: var(--yellow);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.25s;
+            position: relative;
+        }
+        .nav-links a:hover { color: var(--yellow); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--yellow);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--yellow) !important;
+            color: var(--black) !important;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            transition: background 0.25s, transform 0.2s !important;
+        }
+        .nav-cta:hover {
+            background: var(--yellow-hover) !important;
+            transform: translateY(-1px);
+        }
+        .nav-cta::after { display: none !important; }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            background: none;
+            border: none;
+        }
+        .mobile-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s;
+            display: block;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 92vh;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding-top: 72px;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 50%, rgba(255,210,0,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(255,210,0,0.04) 0%, transparent 50%);
+        }
+        .hero-grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,210,0,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,210,0,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.6;
+        }
+        .hero-diagonal {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: var(--white);
+            clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        }
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+        .hero-content {
+            animation: slideInLeft 0.8s ease forwards;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,210,0,0.12);
+            border: 1px solid rgba(255,210,0,0.25);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--yellow);
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--yellow);
+            animation: pulse 2s infinite;
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5vw, 64px);
+            line-height: 1.05;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        .hero h1 .highlight {
+            color: var(--yellow);
+            position: relative;
+        }
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--yellow);
+            opacity: 0.2;
+            border-radius: 3px;
+        }
+        .hero p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 36px;
+            max-width: 480px;
+        }
+        .hero-search {
+            display: flex;
+            background: var(--white);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+            animation: fadeUp 0.8s ease 0.3s both;
+        }
+        .hero-search input {
+            flex: 1;
+            padding: 18px 24px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-family: var(--font-body);
+            color: var(--black);
+        }
+        .hero-search input::placeholder {
+            color: var(--gray-400);
+        }
+        .hero-search button {
+            background: var(--yellow);
+            border: none;
+            padding: 18px 32px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--black);
+            cursor: pointer;
+            transition: background 0.25s;
+            white-space: nowrap;
+        }
+        .hero-search button:hover {
+            background: var(--yellow-hover);
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            animation: fadeIn 0.8s ease 0.5s both;
+        }
+        .hero-tags span {
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            font-weight: 500;
+        }
+        .hero-tags a {
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 100px;
+            transition: all 0.25s;
+        }
+        .hero-tags a:hover {
+            background: rgba(255,210,0,0.15);
+            color: var(--yellow);
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            animation: scaleIn 0.8s ease 0.2s both;
+        }
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: var(--black-soft);
+        }
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .hero-image-placeholder {
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(135deg, rgba(255,210,0,0.1) 0%, transparent 50%),
+                var(--black-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-image-placeholder svg {
+            width: 120px;
+            height: 120px;
+            opacity: 0.15;
+            fill: var(--yellow);
+        }
+        .hero-floating-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            animation: fadeUp 0.6s ease 0.8s both;
+        }
+        .hero-card-1 {
+            bottom: -20px;
+            left: -30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-card-1 .card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-card-1 .card-icon svg { width: 22px; height: 22px; }
+        .hero-card-1 .card-text strong { display: block; font-size: 14px; }
+        .hero-card-1 .card-text span { font-size: 12px; color: var(--gray-600); }
+
+        .hero-card-2 {
+            top: 20px;
+            right: -20px;
+            text-align: center;
+            animation-delay: 1s;
+        }
+        .hero-card-2 .stars {
+            color: var(--yellow);
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+        .hero-card-2 strong {
+            display: block;
+            font-size: 24px;
+            font-family: var(--font-display);
+            margin: 4px 0;
+        }
+        .hero-card-2 span {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        /* ── MARQUEE ── */
+        .marquee-section {
+            background: var(--yellow);
+            padding: 14px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee-track {
+            display: flex;
+            animation: marquee 25s linear infinite;
+            width: fit-content;
+        }
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 40px;
+            font-family: var(--font-display);
+            font-size: 13px;
+            color: var(--black);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .marquee-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--black);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── SERVICES ── */
+        .services {
+            padding: 100px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--yellow-hover);
+            background: var(--yellow-light);
+            padding: 6px 16px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.5vw, 42px);
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+        .section-header p {
+            font-size: 16px;
+            color: var(--gray-600);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.35s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--yellow);
+            transform: scaleX(0);
+            transition: transform 0.35s ease;
+        }
+        .service-card:hover {
+            border-color: var(--yellow);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(255,210,0,0.12);
+        }
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: var(--gray-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s;
+        }
+        .service-card:hover .service-icon {
+            background: var(--yellow);
+            transform: scale(1.1);
+        }
+        .service-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--black);
+        }
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+        .service-card p {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.55;
+        }
+
+        /* ── WHY CHOOSE US ── */
+        .why-us {
+            background: var(--black);
+            padding: 100px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .why-us::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,210,0,0.06), transparent 70%);
+        }
+        .why-us-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .why-us .section-header h2 { color: var(--white); }
+        .why-us .section-header p { color: rgba(255,255,255,0.5); }
+        .why-us .section-label {
+            background: rgba(255,210,0,0.12);
+            color: var(--yellow);
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+        .why-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 40px 32px;
+            transition: all 0.35s;
+        }
+        .why-card:hover {
+            background: rgba(255,210,0,0.06);
+            border-color: rgba(255,210,0,0.2);
+            transform: translateY(-4px);
+        }
+        .why-number {
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: var(--yellow);
+            opacity: 0.25;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        .why-card h3 {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .why-card p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.65;
+        }
+
+        /* ── STATS ── */
+        .stats-bar {
+            background: var(--yellow);
+            padding: 60px 24px;
+        }
+        .stats-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+        .stat-item strong {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 42px;
+            color: var(--black);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-item span {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(26,26,26,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── TESTIMONIALS ── */
+        .testimonials {
+            padding: 100px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 10px;
+        }
+        .testimonial-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 36px 28px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .testimonial-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            transform: translateY(-3px);
+        }
+        .testimonial-quote {
+            font-size: 40px;
+            font-family: var(--font-display);
+            color: var(--yellow);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .testimonial-card p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--gray-600);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--yellow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--black);
+        }
+        .testimonial-author strong {
+            display: block;
+            font-size: 14px;
+        }
+        .testimonial-author span {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+        .testimonial-stars {
+            color: var(--yellow);
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        /* ── CTA SECTION ── */
+        .cta-section {
+            padding: 100px 24px;
+            background: var(--gray-50);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255,210,0,0.06), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,210,0,0.06), transparent 50%);
+        }
+        .cta-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-inner h2 {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.5vw, 42px);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .cta-inner h2 span { color: var(--yellow-hover); }
+        .cta-inner p {
+            font-size: 16px;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--yellow);
+            color: var(--black);
+        }
+        .btn-primary:hover {
+            background: var(--yellow-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,210,0,0.3);
+        }
+        .btn-secondary {
+            background: var(--black);
+            color: var(--white);
+        }
+        .btn-secondary:hover {
+            background: var(--black-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 80px 24px 0;
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 48px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-brand .logo { margin-bottom: 20px; }
+        .footer-brand p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            max-width: 300px;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 12px;
+        }
+        .footer-socials a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+        }
+        .footer-socials a:hover {
+            background: var(--yellow);
+        }
+        .footer-socials a svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--white);
+            transition: fill 0.25s;
+        }
+        .footer-socials a:hover svg { fill: var(--black); }
+        .footer-col h4 {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 20px;
+        }
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-col a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.25s;
+        }
+        .footer-col a:hover { color: var(--yellow); }
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-contact-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--yellow);
+            flex-shrink: 0;
+        }
+        .footer-bottom {
+            padding: 24px 0;
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ── HOW IT WORKS ── */
+        .how-it-works {
+            padding: 100px 24px;
+            background: var(--gray-50);
+        }
+        .how-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+            position: relative;
+        }
+        .steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 48px;
+            left: 16.66%;
+            right: 16.66%;
+            height: 2px;
+            background: repeating-linear-gradient(90deg, var(--yellow) 0px, var(--yellow) 8px, transparent 8px, transparent 16px);
+        }
+        .step-card {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .step-number {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 24px;
+            background: var(--white);
+            border: 3px solid var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--yellow-hover);
+            transition: all 0.35s;
+        }
+        .step-card:hover .step-number {
+            background: var(--yellow);
+            color: var(--black);
+            transform: scale(1.08);
+        }
+        .step-card h3 {
+            font-family: var(--font-display);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .step-card p {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.6;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+            .hero-visual { max-width: 500px; margin: 0 auto; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-top { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: var(--black);
+                padding: 24px;
+                border-bottom: 3px solid var(--yellow);
+                gap: 20px;
+            }
+            .mobile-toggle { display: flex; }
+            .hero { min-height: auto; padding-top: 100px; }
+            .hero-inner { padding: 40px 24px 80px; }
+            .hero h1 { font-size: 36px; }
+            .hero-floating-card { display: none; }
+            .services-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+            .steps-grid::before { display: none; }
+            .footer-top { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-search { flex-direction: column; }
+            .hero-search button { padding: 16px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M13.7826 2.28168C14.1679 1.80738 14.8955 1.90399 15.1449 2.45504L16.0156 4.37889C16.1702 4.72035 16.52 4.93432 16.8953 4.92252L18.9842 4.85652C19.5832 4.83758 19.9635 5.48003 19.6349 5.98728L18.4802 7.77018C18.2752 8.08636 18.2893 8.49775 18.5138 8.79963L19.813 10.5468C20.1677 11.0239 19.8356 11.6929 19.2411 11.7248L17.1544 11.8369C16.7797 11.857 16.4537 12.1003 16.3303 12.456L15.6254 14.4869C15.4244 15.0666 14.685 15.2312 14.2621 14.7884L12.8163 13.2736C12.554 12.9988 12.1382 12.9305 11.8002 13.1086L9.91858 14.0994C9.38325 14.3812 8.74853 13.9412 8.82052 13.3466L9.07432 11.2467C9.11869 10.8804 8.94025 10.5228 8.6155 10.3374L6.76965 9.28275C6.24462 8.98287 6.28555 8.21527 6.83741 7.97287L8.81047 7.10571C9.15498 6.9543 9.37426 6.61195 9.3677 6.23606L9.33042 4.1459C9.31913 3.54649 9.9861 3.20505 10.4726 3.5614L12.1152 4.76481C12.4077 4.97911 12.8062 4.99236 13.1126 4.79834L13.7826 2.28168Z"/></svg>
+            </div>
+            <span class="logo-text">RASMI <span>DESIGN & REPAIRS</span></span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-pattern"></div>
+    <div class="hero-diagonal"></div>
+    <div class="hero-inner">
+        <div class="hero-content">
+            <div class="hero-badge">Serving Dublin & Surrounding Areas</div>
+            <h1>Your Home's <br><span class="highlight">Best Friend,</span><br>Always Reliable</h1>
+            <p>From plumbing and electrical to full renovations and custom carpentry — Rasmi Design & Repairs handles it all with precision, speed, and care.</p>
+            <div class="hero-cta-buttons" style="display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp 0.8s ease 0.3s both;">
+                <a href="tel:+353874899177" class="btn btn-primary" style="font-size:16px;padding:18px 32px;">
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    Call +353 874 899 177
+                </a>
+                <a href="https://wa.me/353874899177" class="btn btn-whatsapp" target="_blank" style="font-size:16px;padding:18px 32px;background:#25D366;color:#fff;border-radius:4px;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;">
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WhatsApp Us
+                </a>
+            </div>
+            <div class="hero-tags" style="animation:fadeIn 0.8s ease 0.5s both;">
+                <span>Popular:</span>
+                <a href="#services">Plumbing</a>
+                <a href="#services">Electrical</a>
+                <a href="#services">Painting</a>
+                <a href="#services">Renovation</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-image-wrapper">
+                <div class="hero-image-placeholder">
+                    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </div>
+            </div>
+            <div class="hero-floating-card hero-card-1">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div class="card-text">
+                    <strong>Trusted Pros</strong>
+                    <span>Verified & insured team</span>
+                </div>
+            </div>
+            <div class="hero-floating-card hero-card-2">
+                <div class="stars">★★★★★</div>
+                <strong>5.0</strong>
+                <span>Customer Rating</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-section">
+    <div class="marquee-track">
+        <div class="marquee-item">Modern Equipment</div>
+        <div class="marquee-item">Best Designers</div>
+        <div class="marquee-item">Short Deadlines</div>
+        <div class="marquee-item">Dublin Based</div>
+        <div class="marquee-item">Free Estimates</div>
+        <div class="marquee-item">Licensed & Insured</div>
+        <div class="marquee-item">Modern Equipment</div>
+        <div class="marquee-item">Best Designers</div>
+        <div class="marquee-item">Short Deadlines</div>
+        <div class="marquee-item">Dublin Based</div>
+        <div class="marquee-item">Free Estimates</div>
+        <div class="marquee-item">Licensed & Insured</div>
+    </div>
+</div>
+
+<!-- ── SERVICES ── -->
+<section class="services" id="services">
+    <div class="section-header reveal">
+        <div class="section-label">What We Do</div>
+        <h2>Our Main Services</h2>
+        <p>Professional home repair and design solutions tailored to your needs, delivered with precision and care.</p>
+    </div>
+    <div class="services-grid">
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zM18.36 16.83c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.42 3.58-8 8-8s8 3.58 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6z"/></svg>
+            </div>
+            <h3>Plumbing</h3>
+            <p>Fixing leaks, unclogging drains, and installing new fixtures with expert care.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-7v7h-1v-7H4v-1h7V4h1v7h7v1z"/></svg>
+            </div>
+            <h3>Carpentry</h3>
+            <p>Building custom furniture, repairing wood structures, creating storage solutions.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M21.67 18.17l-5.3-5.3h-.99l-2.54 2.54v.99l5.3 5.3c.39.39 1.02.39 1.41 0l2.12-2.12c.39-.38.39-1.02 0-1.41zM17.34 10l4.24-4.24c.39-.39.39-1.02 0-1.41L19.17 1.94c-.39-.39-1.02-.39-1.41 0L13.52 6.18 10 2.66 8.59 4.07 10 5.48 4.76 10.72c-.39.39-.39 1.02 0 1.41l2.12 2.12c.39.39 1.02.39 1.41 0l5.24-5.24 1.41 1.41-1.41 1.41 1.41 1.41L17.34 10z"/></svg>
+            </div>
+            <h3>Handyman</h3>
+            <p>Performing seasonal maintenance, minor repairs, and routine home upkeep.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            </div>
+            <h3>Electrical</h3>
+            <p>Installing lighting, repairing outlets, and handling electrical issues safely.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M18 4V3c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V6h1v4H9v11c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-9h8V4h-3z"/></svg>
+            </div>
+            <h3>Painting</h3>
+            <p>Providing interior and exterior painting, touch-ups, and premium finishes.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </div>
+            <h3>Renovation</h3>
+            <p>Renovating kitchens, bathrooms, and spaces for functionality and style.</p>
+        </div>
+        <div class="service-card reveal">
+            <div class="service-icon">
+                <svg viewBox="0 0 24 24"><path d="M18 10.48V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4.48l4 3.98v-11l-4 3.98zm-2-.79V18H4V6h12v3.69z"/></svg>
+            </div>
+            <h3>Security Cameras</h3>
+            <p>Surveillance camera installation and maintenance with quality and reliability.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-it-works" id="how">
+    <div class="how-inner">
+        <div class="section-header reveal">
+            <div class="section-label">Simple Process</div>
+            <h2>How It Works</h2>
+            <p>Getting your home repaired or redesigned is easier than you think.</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="step-number">1</div>
+                <h3>Tell Us What You Need</h3>
+                <p>Describe your project or issue. Call, email, or message us on WhatsApp — whatever works best for you.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">2</div>
+                <h3>Get a Free Quote</h3>
+                <p>We'll assess the job and provide a transparent, no-obligation estimate so you know exactly what to expect.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">3</div>
+                <h3>We Get It Done</h3>
+                <p>Our skilled team arrives on time, works efficiently with modern equipment, and leaves your space spotless.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── WHY CHOOSE US ── -->
+<section class="why-us" id="why-us">
+    <div class="why-us-inner">
+        <div class="section-header reveal">
+            <div class="section-label">Why Rasmi?</div>
+            <h2>Why Homeowners Trust Us</h2>
+            <p>We combine craftsmanship with reliability to deliver results that exceed expectations.</p>
+        </div>
+        <div class="why-grid">
+            <div class="why-card reveal">
+                <div class="why-number">01</div>
+                <h3>Modern Equipment</h3>
+                <p>We invest in the latest tools and technology to ensure every job is done right the first time, with precision and efficiency.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-number">02</div>
+                <h3>Best Designers</h3>
+                <p>Our team combines technical skill with creative vision, turning functional repairs into beautiful design solutions for your home.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-number">03</div>
+                <h3>Short Deadlines</h3>
+                <p>We respect your time. Projects are completed on schedule without cutting corners — because your home shouldn't be a construction zone for weeks.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+    <div class="stats-inner">
+        <div class="stat-item reveal">
+            <strong id="statProjects">0</strong>
+            <span>Projects Completed</span>
+        </div>
+        <div class="stat-item reveal">
+            <strong id="statClients">0</strong>
+            <span>Happy Clients</span>
+        </div>
+        <div class="stat-item reveal">
+            <strong id="statYears">0</strong>
+            <span>Years Experience</span>
+        </div>
+        <div class="stat-item reveal">
+            <strong>24/7</strong>
+            <span>Support Available</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="testimonials">
+    <div class="section-header reveal">
+        <div class="section-label">Reviews</div>
+        <h2>What Our Clients Say</h2>
+        <p>Real feedback from homeowners across Dublin who trusted Rasmi Design & Repairs.</p>
+    </div>
+    <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"</div>
+            <p>Rasmi's team completely transformed our kitchen. They were punctual, clean, and the craftsmanship was outstanding. Highly recommend for any renovation work!</p>
+            <div class="testimonial-author">
+                <div class="testimonial-avatar">SC</div>
+                <div>
+                    <strong>Sarah C.</strong>
+                    <span>Kitchen Renovation — Dublin 4</span>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"</div>
+            <p>Had an emergency plumbing issue on a Sunday evening. Rasmi responded within the hour and fixed everything perfectly. Truly reliable — they mean it when they say "always reliable."</p>
+            <div class="testimonial-author">
+                <div class="testimonial-avatar">MO</div>
+                <div>
+                    <strong>Mark O.</strong>
+                    <span>Emergency Plumbing — Dublin 8</span>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-quote">"</div>
+            <p>Had our entire house painted inside and out. The finish is flawless and they were so careful with our furniture. Completed ahead of schedule too — can't recommend them enough!</p>
+            <div class="testimonial-author">
+                <div class="testimonial-avatar">LK</div>
+                <div>
+                    <strong>Laura K.</strong>
+                    <span>Interior & Exterior Painting — Dublin 2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="contact">
+    <div class="cta-inner reveal">
+        <div class="section-label">Get Started</div>
+        <h2>Ready to Fix, Build, or <span>Renovate?</span></h2>
+        <p>Get in touch today for a free, no-obligation quote. We're here to help make your home exactly what you need it to be.</p>
+        <div class="cta-buttons">
+            <a href="tel:+353874899177" class="btn btn-primary">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                Call +353 874 899 177
+            </a>
+            <a href="https://wa.me/353874899177" class="btn btn-secondary" target="_blank" style="background:#25D366;color:#fff;">
+                <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    </div>
+                    <span class="logo-text">RASMI <span>DESIGN & REPAIRS</span></span>
+                </a>
+                <p>Your home's best friend, always reliable. Professional home repair and design services across Dublin and surrounding areas.</p>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/rasmi.design.repair/" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                    </a>
+                    <a href="https://wa.me/353874899177" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#services">Plumbing</a></li>
+                    <li><a href="#services">Carpentry</a></li>
+                    <li><a href="#services">Electrical</a></li>
+                    <li><a href="#services">Painting</a></li>
+                    <li><a href="#services">Renovation</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>More Services</h4>
+                <ul>
+                    <li><a href="#services">Handyman</a></li>
+                    <li><a href="#services">Security Cameras</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>
+                        <a href="tel:+353874899177" class="footer-contact-item">
+                            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            +353 874 899 177
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wa.me/353874899177" class="footer-contact-item" target="_blank">
+                            <svg viewBox="0 0 24 24" style="fill:var(--yellow)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            WhatsApp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/rasmi.design.repair/" class="footer-contact-item" target="_blank">
+                            <svg viewBox="0 0 24 24" style="fill:var(--yellow)"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                            @rasmi.design.repair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Rasmi Design & Repairs. All rights reserved.</span>
+            <span>Dublin, Ireland</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Nav scroll effect ──
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ── Mobile menu ──
+    document.getElementById('mobileToggle').addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('open');
+        const spans = this.querySelectorAll('span');
+        this.classList.toggle('active');
+        if (this.classList.contains('active')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '';
+            spans[2].style.transform = '';
+        }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', () => {
+            document.getElementById('navLinks').classList.remove('open');
+            const toggle = document.getElementById('mobileToggle');
+            toggle.classList.remove('active');
+            toggle.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+        });
+    });
+
+    // ── Counter animation ──
+    function animateCounter(el, target, suffix = '+') {
+        let current = 0;
+        const increment = target / 60;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = Math.floor(current) + suffix;
+        }, 25);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(document.getElementById('statProjects'), 500, '+');
+                animateCounter(document.getElementById('statClients'), 350, '+');
+                animateCounter(document.getElementById('statYears'), 8, '+');
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(document.querySelector('.stats-bar'));
+
+</script>
+
+</body>
+</html>
